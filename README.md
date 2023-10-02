@@ -1,66 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Description
 
-## About Laravel
+The Task Management API is built using Laravel and its primary function is to manage and distribute tasks among employees in your organization. This project allows you to create, update, delete, and track the status of tasks, as well as assign tasks to different employees.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Key Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. **Task Management**:
+    - Create new tasks with titles, descriptions, deadlines, and priorities.
+    - View a list of existing tasks.
+    - Update task information (title, description, deadline, priority).
+    - Delete tasks from the system.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. **Task Assignment**:
+    - Assign tasks to one or multiple employees.
+    - View a list of tasks assigned to each employee.
+    - Unassign tasks from employees as needed.
 
-## Learning Laravel
+3. **Task Status**:
+    - Track the status of tasks (completed, in progress, not started).
+    - Update task status upon completion.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. **Employee Management**:
+    - Create new employees with basic information (name, email, job position, etc.).
+    - View a list of employees in the organization.
+    - Update employee information.
+    - Remove employees from the system.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## API Endpoints
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+This project provides the following API endpoints:
 
-## Laravel Sponsors
+- `GET /api/tasks`: Retrieve a list of tasks.
+- `POST /api/tasks`: Create a new task.
+- `GET /api/tasks/{id}`: Retrieve detailed information about a task.
+- `PUT /api/tasks/{id}`: Update a task.
+- `DELETE /api/tasks/{id}`: Delete a task.
+- `GET /api/employees`: Retrieve a list of employees.
+- `POST /api/employees`: Create a new employee.
+- `GET /api/employees/{id}`: Retrieve detailed information about an employee.
+- `PUT /api/employees/{id}`: Update employee information.
+- `DELETE /api/employees/{id}`: Remove an employee.
+- `POST /api/tasks/{task_id}/assign/{employee_id}`: Assign a task to an employee.
+- `DELETE /api/tasks/{task_id}/unassign/{employee_id}`: Unassign a task from an employee.
+- `PATCH /api/tasks/{task_id}/status/{status}`: Update the status of a task.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Authentication
 
-### Premium Partners
+To use this API, you need to authenticate using JSON Web Tokens (JWT). Make sure you are logged in and have a valid token before accessing protected endpoints.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Installation
 
-## Contributing
+1. I will add this content in the near future.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Usage
 
-## Code of Conduct
+You can now use the API to manage and distribute tasks within your organization.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Laravel Version
 
-## Security Vulnerabilities
+This project is built using Laravel [10.25.2](https://laravel.com/docs/10.x). Ensure you have the compatible Laravel version to smoothly run the project.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Additional Documentation
 
-## License
+For more details on how to use the API and additional setup instructions, please refer to the documentation within the project or add supplementary information to the README.md file.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Prerequisites
+
+- [Docker](https://www.docker.com/get-started) must be installed on your system.
+
+### License
+
+This project is licensed under the [MIT License](https://opensource.org/license/mit/).
+
+### Author
+
+- Minh Việt (VietD)
+- GitHub: [https://github.com/vietdm](https://github.com/vietdm)
