@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    docker-compose exec dco_app sh -c "php artisan"
+    exit 0
+fi
+
+if [ -z "$2" ]; then
+    docker-compose exec dco_app sh -c "php artisan $1"
+    exit 0
+fi
+
+if [ -z "$3" ]; then
+    docker-compose exec dco_app sh -c "php artisan $1 $2"
+    exit 0
+fi
+
+if [ -z "$4" ]; then
+    docker-compose exec dco_app sh -c "php artisan $1 $2 $3"
+    exit 0
+fi
+
+if [ -z "$5" ]; then
+    docker-compose exec dco_app sh -c "php artisan $1 $2 $3 $4"
+    exit 0
+fi
