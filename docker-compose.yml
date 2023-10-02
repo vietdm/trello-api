@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  dco_nginx:
+    container_name: dco_nginx
+    image: nginx:1.25-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app
+      - ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - dco_app
+    networks:
+      - dco_network
+
+  dco_app:
+    container_name: dco_app
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./.docker/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - dco_network
+
+  dco_database:
+    container_name: dco_database
+    image: library/mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 239199aa2e5b73e13a7e9f07bfb5bf77da468a95
+      MYSQL_USER: databaseusername
+      MYSQL_PASSWORD: b85d1f3e7f0adf3306c61d7c242b7ffff70fdf69
+      MYSQL_DATABASE: databasename
+    volumes:
+      - dco_database_data:/var/lib/mysql
+      - ./.docker/mysql.cnf:/etc/mysql/conf.d/custom.cnf
+    networks:
+      - dco_network
+
+  dco_phpmyadmin:
+    container_name: dco_phpmyadmin
+    depends_on:
+      - dco_database
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: dco_database
+      PMA_USER: databaseusername
+      PMA_PASSWORD: b85d1f3e7f0adf3306c61d7c242b7ffff70fdf69
+    networks:
+      - dco_network
+
+volumes:
+  dco_database_data:
+    driver: local
+
+networks:
+  dco_network:
+    driver: bridge
