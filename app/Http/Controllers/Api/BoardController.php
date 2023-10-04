@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\BoardRepository;
+use App\Repositories\ProjectRepository;
 use App\Repositories\TaskRepository;
 use App\Utils\Response;
 use Exception;
@@ -15,20 +16,35 @@ class BoardController extends Controller
 {
     private BoardRepository $boardRepository;
     private TaskRepository $taskRepository;
+    private ProjectRepository $projectRepository;
 
     public function __construct(
         BoardRepository $boardRepository,
-        TaskRepository $taskRepository
+        TaskRepository $taskRepository,
+        ProjectRepository $projectRepository
     ) {
         parent::__construct();
         $this->boardRepository = $boardRepository;
         $this->taskRepository = $taskRepository;
+        $this->projectRepository = $projectRepository;
+    }
+
+    public function getAllBoards(): JsonResponse
+    {
+        $boards = $this->boardRepository->getAll();
+        return Response::success(['boards' => $boards]);
     }
 
 
-    public function getBoards(): JsonResponse
+    public function getBoards($uuidProject): JsonResponse
     {
-        $boards = $this->boardRepository->getAll();
+        $project = $this->projectRepository->first($uuidProject);
+        if (!$project) {
+            return Response::badRequest('Project not found!');
+        }
+
+        $boards = $this->boardRepository->find('project_id', $project->id);
+
         return Response::success(['boards' => $boards]);
     }
 

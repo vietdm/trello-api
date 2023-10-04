@@ -2,21 +2,21 @@
 
 namespace App\Repositories;
 
-use App\Models\Boards;
+use App\Models\Projects;
 
-class BoardRepository extends Repository
+class ProjectRepository extends Repository
 {
     protected string $idColumnName = 'uuid';
 
     public function getModel(): string
     {
-        return Boards::class;
+        return Projects::class;
     }
 
     protected function makeAs(): void
     {
-        $this->as(function ($query) {
-            return $query->with(['user', 'project']);
+        $this->as(function($query) {
+            return $query->with(['user']);
         });
     }
 }

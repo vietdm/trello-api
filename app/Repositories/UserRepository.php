@@ -12,11 +12,4 @@ class UserRepository extends Repository
     {
         return User::class;
     }
-
-    // protected function makeAs(): void
-    // {
-    //     $this->as(function($query) {
-    //         return $query->with(['user', 'board']);
-    //     });
-    // }
 }
