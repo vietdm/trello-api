@@ -12,7 +12,9 @@ Route::get('healthy', function () {
 Route::prefix('v1')->group(function() {
     Route::prefix('board')->group(function() {
         Route::get('all', [BoardController::class, 'getBoards']);
+        Route::get('paths', [BoardController::class, 'getBoardPaths']);
         Route::get('{uuid}', [BoardController::class, 'getBoard']);
+        Route::get('{uuid}/task', [BoardController::class, 'getTaskOfBoard']);
     
         Route::post('create', [BoardController::class, 'createBoard']);
     

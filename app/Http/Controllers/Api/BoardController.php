@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\BoardRepository;
+use App\Repositories\TaskRepository;
 use App\Utils\Response;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -12,12 +13,16 @@ use Illuminate\Support\Str;
 
 class BoardController extends Controller
 {
-    protected BoardRepository $boardRepository;
+    private BoardRepository $boardRepository;
+    private TaskRepository $taskRepository;
 
-    public function __construct(BoardRepository $boardRepository)
-    {
+    public function __construct(
+        BoardRepository $boardRepository,
+        TaskRepository $taskRepository
+    ) {
         parent::__construct();
         $this->boardRepository = $boardRepository;
+        $this->taskRepository = $taskRepository;
     }
 
 
@@ -27,10 +32,28 @@ class BoardController extends Controller
         return Response::success(['boards' => $boards]);
     }
 
+    public function getBoardPaths(): JsonResponse
+    {
+        $boards = $this->boardRepository->getAll()->toArray();
+        return Response::success(['paths' => array_column($boards, 'uuid')]);
+    }
+
     public function getBoard($uuid): JsonResponse
     {
         $board = $this->boardRepository->first($uuid);
         return Response::success(['board' => $board]);
+    }
+
+    public function getTaskOfBoard($uuid): JsonResponse
+    {
+        $board = $this->boardRepository->first($uuid);
+        if (!$board) {
+            return Response::badRequest('Board not found!');
+        }
+
+        $tasks = $this->taskRepository->find('board_id', $board->id);
+
+        return Response::success(['tasks' => $tasks]);
     }
 
     public function createBoard(): JsonResponse

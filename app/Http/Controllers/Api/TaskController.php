@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\BoardRepository;
 use App\Repositories\TaskRepository;
+use App\Repositories\UserRepository;
 use App\Utils\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
@@ -14,14 +15,17 @@ class TaskController extends Controller
 {
     private TaskRepository $taskRepository;
     private BoardRepository $boardRepository;
+    private UserRepository $userRepository;
 
     public function __construct(
         TaskRepository $taskRepository,
-        BoardRepository $boardRepository
+        BoardRepository $boardRepository,
+        UserRepository $userRepository
     ) {
         parent::__construct();
         $this->taskRepository = $taskRepository;
         $this->boardRepository = $boardRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function getTasks(): JsonResponse
@@ -38,17 +42,30 @@ class TaskController extends Controller
 
     public function addTask(): JsonResponse
     {
-        $rule = [
+        Validator::make($this->request->all(), [
             'title' => 'required',
             'description' => 'required',
             'user_uuid' => 'required|exists:users,uuid',
             'board_uuid' => 'required|exists:boards,uuid'
+        ]);
+
+        $user = $this->userRepository->first($this->request->user_uuid);
+        if (!$user) {
+            return Response::badRequest('User not found!');
+        }
+
+        $board = $this->boardRepository->first($this->request->board_uuid);
+        if (!$board) {
+            return Response::badRequest('Board not found!');
+        }
+
+        $param = [
+            'uuid' => Str::uuid()->toString(),
+            'title' => $this->request->title,
+            'description' => $this->request->description,
+            'user_id' => $user->id,
+            'board_id' => $board->id
         ];
-
-        Validator::make($this->request->all(), $rule);
-
-        $param = $this->request->only(array_keys($rule));
-        $param['uuid'] = Str::uuid()->toString();
 
         return $this->taskRepository->create($param)
             ? Response::created('Create new task success!')
