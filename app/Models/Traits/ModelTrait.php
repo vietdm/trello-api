@@ -5,7 +5,8 @@ namespace App\Models\Traits;
 use Illuminate\Support\Facades\DB;
 
 trait ModelTrait {
-    public static function insert($data, $catchError = true) {
+    public static function insert($data, $catchError = true): self|bool
+    {
         $model = new self;
         foreach ($data as $key => $value) {
             $model->{$key} = $value;

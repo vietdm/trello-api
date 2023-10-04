@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -11,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         User::insert([
+            'uuid' => Str::uuid()->toString(),
             'name' => 'Administrator',
             'email' => 'admin@dev.local',
             'password' => bcrypt('admin1')
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        /// void function
+        // void function
     }
 };
