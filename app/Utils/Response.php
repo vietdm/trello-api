@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\MessageBag;
 
 class Response
 {
@@ -45,6 +46,21 @@ class Response
             $message = 'Bad Request';
         }
         return self::send(false, $message, $data, 400);
+    }
+
+    public static function paramError(string|array|MessageBag $message = [], array|MessageBag $data = []): JsonResponse
+    {
+        if ($message instanceof MessageBag) {
+            $message = $message->toArray();
+        }
+        if (gettype($message) === 'array') {
+            $data = $message;
+            $message = 'Param error!';
+        }
+        if ($data instanceof MessageBag) {
+            $data = $data->toArray();
+        }
+        return self::send(false, $message, $data, 422);
     }
 
     public static function unauthorized(string|array $message = [], array $data = []): JsonResponse

@@ -16,7 +16,7 @@ class BoardRepository extends Repository
     protected function makeAs(): void
     {
         $this->as(function ($query) {
-            return $query->with(['user', 'project']);
+            return $query->with(['user', 'project', 'tasks']);
         });
     }
 }

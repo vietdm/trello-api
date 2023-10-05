@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\BoardRepository;
 use App\Repositories\ProjectRepository;
 use App\Repositories\UserRepository;
 use App\Utils\Response;
@@ -14,17 +13,14 @@ use Illuminate\Support\Str;
 class ProjectController extends Controller
 {
     private ProjectRepository $projectRepository;
-    private BoardRepository $boardRepository;
     private UserRepository $userRepository;
 
     public function __construct(
         ProjectRepository $projectRepository,
-        BoardRepository $boardRepository,
         UserRepository $userRepository
     ) {
         parent::__construct();
         $this->projectRepository = $projectRepository;
-        $this->boardRepository = $boardRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -42,11 +38,15 @@ class ProjectController extends Controller
 
     public function createProject(): JsonResponse
     {
-        Validator::make($this->request->all(), [
+        $validate = Validator::make($this->request->all(), [
             'title' => 'required',
             'description' => 'required',
             'user_uuid' => 'required|exists:users,uuid'
         ]);
+
+        if ($validate->fails()) {
+            return Response::paramError($validate->errors());
+        }
 
         $user = $this->userRepository->first($this->request->user_uuid);
 

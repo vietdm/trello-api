@@ -44,9 +44,12 @@ abstract class Repository implements RepositoryInterface
 
     private function useAs(Builder $query): Builder
     {
-        $query = is_callable($this->_as) ? call_user_func($this->_as, $query) : $query;
+        return is_callable($this->_as) ? call_user_func($this->_as, $query) : $query;
+    }
+    protected function clearAs(): static
+    {
         $this->_as = null;
-        return $query;
+        return $this;
     }
 
     protected function makeAs(): void {}

@@ -35,7 +35,6 @@ class BoardController extends Controller
         return Response::success(['boards' => $boards]);
     }
 
-
     public function getBoards($uuidProject): JsonResponse
     {
         $project = $this->projectRepository->first($uuidProject);
